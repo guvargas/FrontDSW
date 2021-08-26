@@ -60,25 +60,12 @@
     <br>
     <p class="lead" >
   
-
-
-
-
-
-
-
-
-
-
-
-
       <center>
         <a href="/login.html" class="btn btn-lg justify-content-center btn-secondary fw-bold bg-transparent">Adicionar um compromisso
             <i class="material-icons md-48">celebration</i>
         </a><br><br>
     </center>
       </p>
-
 
       
   </main>
@@ -103,12 +90,10 @@
 
   function chamarGet(){
     var request = new XMLHttpRequest()
-
-request.open('GET', 'http://localhost:4000/compromissos', true)
-request.onload = function () {
+  request.open('GET', 'http://localhost:4000/compromissos', true)
+  request.onload = function () {
   // Begin accessing JSON data here
   var data = JSON.parse(this.response)
-
   if (request.status >= 200 && request.status < 400) {
     for(ob in data.compromissos){
       console.log(data.compromissos[ob].descricao);
@@ -127,8 +112,7 @@ request.onload = function () {
     console.log('error')
   }
 }
-
-request.send()
+  request.send()
   }
   
 </script>

@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<!------ Include the above in your HEAD tag ---------->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="style.css">
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-	<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+
 	<title>Agenda</title>
 </head>
 <body>
@@ -27,11 +28,11 @@
                <form>
                   <div class="form-group">
                      <label>Usuário</label>
-                     <input type="text" class="form-control" placeholder="Digite o seu usuário">
+                     <input type="text" id="nome" class="form-control" placeholder="Digite o seu usuário">
                   </div>
                   <div class="form-group">
                      <label>Senha</label>
-                     <input type="password" class="form-control" placeholder="Digite sua senha">
+                     <input type="password" id="senha" class="form-control" placeholder="Digite sua senha">
                   </div>
                   <button type="submit" id="login" class="btn btn-black">Login</button>
                   <button type="submit" id="registrar" class="btn btn-grey">Registrar</button>
@@ -42,23 +43,48 @@
 </body>
 
 <script>
-$(document).ready(function(){
 
-   $("#registrar").click(function () {
+
+   $(document).ready(function(){ 
+      $("#registrar").click(function () {
       window.location.href = '/registrarse.html';
       return false;
        });
+       $("#login").click(function () {
+               const dados = JSON.stringify(dadosInsert());
+               postUsuario(dados);
+               return false;
+          });
+      });
 
+
+      function postUsuario(dados) {
+            $.ajax({
+                type: "POST",
+                url: "http://192.168.18.90:4000/usuarios",
+                data: dados,
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8"
+            }).done(function (data, status) {
+                alert("Usuário "+ data.name +" criado com sucesso");
+            });
+      }
+
+      function dadosInsert() {
+            var obj = {
+                name: $("#nome").val(),
+                senha: $("#senha").val(),
+                username: $("#senha").val()
+            }
+            return obj;
+        }
+         /*
 
        $("#login").click(function () {
+
          window.location.href = '/principal.html';
          return false;
-       });
-});
-
-
- 
-
-
+         
+         */
 </script>
 </html>

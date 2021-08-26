@@ -22,22 +22,70 @@
       <div class="main">
          <div class="col-md-6 col-sm-12">
             <div class="login-form">
-               <h4>Digite suas informações de login ou cadastre-se</h4>
+               <h4>Digite suas informações para cadastrar-se</h4>
                <br>
                <form>
                   <div class="form-group">
-                     <label>Usuário</label>
-                     <input type="text" class="form-control" placeholder="Digite o seu usuário">
+                     <label>Seu nome</label>
+                     <input type="text" id="nome" class="form-control" placeholder="Digite o seu nome">
+                  </div>
+                  <div class="form-group">
+                     <label>Nome de usuário</label>
+                     <input type="text" id="nomeUsuario" class="form-control" placeholder="Digite o seu nome de usuário">
                   </div>
                   <div class="form-group">
                      <label>Senha</label>
-                     <input type="password" class="form-control" placeholder="Digite sua senha">
+                     <input type="password" id="senha" class="form-control" placeholder="Digite sua senha">
                   </div>
-                  <button type="submit" class="btn btn-black">Login</button>
-                  <button type="submit" class="btn btn-grey">Registrar</button>
+                  <button type="submit" id="registrar" class="btn btn-black">Registrar</button>
+                  <button type="submit" id="entrar" class="btn btn-grey">Entrar</button>
                </form>
             </div>
          </div>
       </div>
+      <script>
+
+         //   window.location.href = '/registrarse.html';
+         $(document).ready(function(){ 
+      $("#registrar").click(function () {
+         const dados = JSON.stringify(dadosInsert());
+         postUsuario(dados);
+         $("#login").hide();
+         return false;
+    
+       });
+       $("#login").click(function () {
+         window.location.href = '/registrarse.html';
+      return false;
+          });
+      });
+
+
+      function postUsuario(dados) {
+            $.ajax({
+                type: "POST",
+                url: "http://192.168.18.90:4000/usuarios",
+                data: dados,
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8"
+            }).done(function (data, status) {
+               if(status=="success"){
+                  alert("Usuário "+ data.name +" criado com sucesso");
+                  window.location.href = '/principal.html';
+               }else{
+                  alert("Ocorreu um erro na criacao do seu usuario"+status);
+               }
+            });
+      }
+
+      function dadosInsert() {
+            var obj = {
+                name: $("#nome").val(),
+                senha: $("#senha").val(),
+                username: $("#senha").val()
+            }
+            return obj;
+        }
+      </script>
 </body>
 </html>
