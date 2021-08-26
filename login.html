@@ -47,15 +47,39 @@
 
    $(document).ready(function(){ 
       $("#registrar").click(function () {
-      window.location.href = '/registrarse.html';
+         var user = localStorage._id;
+
+             alert(user);
+
+
+             
+     // window.location.href = '/registrarse.html';
       return false;
        });
        $("#login").click(function () {
-               const dados = JSON.stringify(dadosInsert());
-               postUsuario(dados);
+               const dados = dadosInsert();
+               getUsuario(dados);
                return false;
           });
       });
+
+      function getUsuario(dados) {
+            $.ajax({
+                type: "GET",
+                url: "http://192.168.18.90:4000/usuarios/login/"+dados.username+"/"+dados.senha,
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8"
+            }).done(function (data, status) {
+
+              localStorage.setItem("usuario",data.login.username);
+              localStorage.setItem("_id",data.login._id);
+              localStorage.setItem("name",data.login.name);
+
+
+            }).fail(function(data, status){
+               alert("Usuário não foi encontrado");
+            });
+      }
 
 
       function postUsuario(dados) {
