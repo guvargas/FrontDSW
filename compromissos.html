@@ -66,8 +66,7 @@
             <p class="lead" >
               <center>
                 <div class="row">
-                  
-                  <div class='col-sm-4'>
+                 <div class='col-sm-4'>
                     <label>Data de inicio</label>
                     <input class="form-control" id="dateInicio" name="date" placeholder="Dia/mês/ano" type="text"/>
                   </div> 
@@ -149,15 +148,16 @@
               }
             }
             if(nomeContato!=""){
-              
+              var idComp=data.compromissos[ob]._id;
               
               text += "<tr>";
                 text += "<td>" + nomeContato + "</td>";
                 text += "<td>" + foneContato + "</td>";
                 text += "<td>" + data.compromissos[ob].descricao + "</td>";
                 text += "<td>" + data.compromissos[ob].local + "</td>";
-                text += "<td>" + data.compromissos[ob].data+ "</td>";               
-                text += "</tr>";
+                text += "<td>" + data.compromissos[ob].data+ "</td>";     
+               text+= "<td><button class=\'btn btn-danger\' onclick=\"excluir("+"\'"+idComp+"\'"+")\">Excluir</button></td>";          
+               text += "</tr>";
                 
               }
               
@@ -169,6 +169,19 @@
           }
         }
         request.send()
+      }
+
+      function excluir(id){
+       
+                $.ajax({
+                    type: "DELETE",
+                    url: "http://192.168.18.90:4000/compromissos/" + id,
+                }).done(function (data, status) {
+                    alert("Compromissso " + id + " excluído com sucesso");
+                    buscarContatos("http://192.168.18.90:4000/contatos/"+localStorage._id,'http://192.168.18.90:4000/compromissos/'+localStorage._id);
+
+                });
+        
       }
       
       function buscarContatos(urlBuscaContato,urlBuscaCompromisso) {
