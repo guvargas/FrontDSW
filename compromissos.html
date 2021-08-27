@@ -18,7 +18,10 @@
   rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
- </head>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+  
+</head>
 <body class="d-flex h-100 text-center text-white bg-dark">
   <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
     <header class="mb-auto">
@@ -33,20 +36,13 @@
     </header>
     <main class="px-3">
       <h1>Seus compromissos</h1>
-      <p class="lead" >
-        <center>
-          <p class="lead" >
-            <center>
-              <input type="text" id="nome" class="form-label fw-normal" placeholder="Nome do contato">
-              <button type="submit" id="filtrar" class="btn btn-light">Filtar por nome<i class="material-icons md-24">filter_list</i></button>
-            </center>
-          </p> 
-        </center>
-      </p>
+      
       <div>
         <table class="table table-bordered table-dark">
           <thead>
             <tr>
+              <th scope="col">Contato</th>
+              <th scope="col">Telefone</th>
               <th scope="col">Descrição</th>
               <th scope="col">Local</th>
               <th scope="col">Data</th>
@@ -55,6 +51,39 @@
           <tbody>
           </tbody>
         </table>
+        <p class="lead" >
+          <center>
+            <p class="lead" >
+              <center>
+                <input type="text" id="nome" class="form-label fw-normal" placeholder="Nome do contato">
+                <button type="submit" id="filtrarNome" class="btn btn-light">Filtar por nome<i class="material-icons md-24">filter_list</i></button>
+              </center>
+            </p> 
+          </center>
+        </p>
+        <p class="lead" >
+          <center>
+            <p class="lead" >
+              <center>
+                <div class="row">
+                  
+                  <div class='col-sm-4'>
+                    <label>Data de inicio</label>
+                    <input class="form-control" id="dateInicio" name="date" placeholder="Dia/mês/ano" type="text"/>
+                  </div> 
+                  <div class='col-sm-4'>
+                    <label>Data final</label>
+                    <input class="form-control" id="dateFim" name="date" placeholder="Dia/mês/ano" type="text"/>
+                  </div>
+                  <div class='col-sm-4'>
+                    <br>
+                    <button type="submit" id="filtrarData" class="btn btn-light">Filtar por data<i class="material-icons md-24">today</i></button>
+                  </div>
+                </div>
+              </center>
+            </p> 
+          </center>
+        </p>
       </div>
       <br>       
     </main>
@@ -69,42 +98,63 @@
   <script>
     $(document).ready(function () {
       verificarLogin();
-      buscarTodosCompromissos();
+      initializeCalendar();
+      buscarContatos("http://192.168.18.90:4000/contatos/"+localStorage._id,'http://192.168.18.90:4000/compromissos/'+localStorage._id);
+      
+      $("#filtrarNome").click(function () {
+        
+        buscarContatos("http://192.168.18.90:4000/contatos/"+localStorage._id+'/'+$("#nome").val(),'http://192.168.18.90:4000/compromissos/'+localStorage._id);
+        return false;
+      });
+      
+      
+      $("#filtrarNome").click(function () {
+        buscarContatos("http://192.168.18.90:4000/contatos/"+localStorage._id+'/'+$("#nome").val(),'http://192.168.18.90:4000/compromissos/'+localStorage._id);
+        return false;
+      });
+      
     })
     
-    /*
-    function verificarLogin(){
-      if(localStorage._id==null){
-        window.location.href = '/login.html';
-        alert("Você precisa se logar ou se registrar para acessar essa página");
-      }
-      
-    }*/
-
-    function buscarTodosContatos(){
+    
+    
+    
+    function buscarTodosCompromissos(contatos,url){
       var request = new XMLHttpRequest()
-      request.open('GET', 'http://192.168.18.90:4000/compromissos/'+localStorage._id, true)
+      request.open('GET', url, true)
       request.onload = function () {
         // Begin accessing JSON data here
         var data = JSON.parse(this.response)
         if (request.status >= 200 && request.status < 400) {
-          console.log(data);
           
-          for(ob in data.compromissos){
-            console.log(data.compromissos[ob].nome);
-          }
           
           if(data.compromissos.length==0){
             alert("Verifiquei aqui que você não tem nenhum compromisso ainda, vamos adicionar?");
             //window.location.href = '/adicionarContato.html';
           }
           var text = "";
+          
           for (ob in data.compromissos) {
-            text += "<tr>";
-              text += "<td>" + data.compromissos[ob].nome + "</td>";
-              text += "<td>" + data.compromissos[ob].email + "</td>";
-              text += "<td>" + data.compromissos[ob].fone + "</td>";               
-              text += "</tr>";
+            var nomeContato = "";
+            var foneContato= "";
+            for(ct in contatos.contato){
+              if(contatos.contato[ct]._id==data.compromissos[ob].idcontato){
+                nomeContato=contatos.contato[ct].nome;
+                foneContato=contatos.contato[ct].fone;
+              }
+            }
+            if(nomeContato!=""){
+              
+              
+              text += "<tr>";
+                text += "<td>" + nomeContato + "</td>";
+                text += "<td>" + foneContato + "</td>";
+                text += "<td>" + data.compromissos[ob].descricao + "</td>";
+                text += "<td>" + data.compromissos[ob].local + "</td>";
+                text += "<td>" + data.compromissos[ob].data+ "</td>";               
+                text += "</tr>";
+                
+              }
+              
             }
             // document.getElementsByTagName("tbody")[0].innerHTML = text;
             $("tbody").html(text);
@@ -114,6 +164,45 @@
         }
         request.send()
       }
+      
+      function buscarContatos(urlBuscaContato,urlBuscaCompromisso) {
+        $.ajax({
+          type: "GET",
+          url: urlBuscaContato,
+          dataType: 'json',
+          contentType: "application/json; charset=utf-8"
+        }).done(function (data, status) {
+          
+          // console.log(data.contato[0].nome);
+          
+          buscarTodosCompromissos(data,urlBuscaCompromisso);
+          
+        }).fail(function(data, status){
+          console.log("Usuário não foi encontrado");
+        });
+      }
+      
+      function initializeCalendar(){
+        var date_input=$('input[name="date"]'); //our date input has the name "date"
+        var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+        var options={
+          format: 'dd/mm/yyyy',
+          container: container,
+          todayHighlight: true,
+          autoclose: true,
+        };
+        date_input.datepicker(options);
+      }
+      
+      
+      function verificarLogin(){
+        if(localStorage._id==null){
+          window.location.href = '/login.html';
+          alert("Você precisa se logar ou se registrar para acessar essa página");
+        }
+      }
+      
+      
       
     </script>
     
