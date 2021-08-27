@@ -103,7 +103,7 @@
       
       $("#filtrarNome").click(function () {
         
-        buscarContatos("http://192.168.18.90:4000/contatos/"+localStorage._id+'/'+$("#nome").val(),'http://192.168.18.90:4000/compromissos/'+localStorage._id);
+        buscarContatos("http://192.168.18.90:4000/contatos/"+localStorage._id+'/nome/'+$("#nome").val(),'http://192.168.18.90:4000/compromissos/'+localStorage._id);
         return false;
       });
       

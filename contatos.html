@@ -92,17 +92,12 @@
     }
     function filtrarPorNome(){
       var request = new XMLHttpRequest()
-      request.open('GET', 'http://192.168.18.90:4000/contatos/'+localStorage._id+'/'+$("#nome").val(), true)
+      request.open('GET', 'http://192.168.18.90:4000/contatos/'+localStorage._id+'/nome/'+$("#nome").val(), true)
       request.onload = function () {
         // Begin accessing JSON data here
         var data = JSON.parse(this.response)
         if (request.status >= 200 && request.status < 400) {
-          console.log(data);
-          
-          for(ob in data.contato){
-            console.log(data.contato[ob].nome);
-          }
-          
+        
           if(data.contato.length==0){
             alert("Este nome não foi encontrado em seus contatos, verifique o nome e tente novamente");
           }
