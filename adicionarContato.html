@@ -111,11 +111,7 @@
     }
     
 
-    function verificarLogin(){
-    if(localStorage._id==null){
-      window.location.href = '/login.html';
-      alert("Você precisa se logar ou se registrar para acessar essa página");
-    }}
+   
     
     function dadosInseridos() {
             var obj = {
@@ -126,7 +122,11 @@
             }
             return obj;
         }
-    
+        function verificarLogin(){
+    if(localStorage._id==null){
+      window.location.href = '/login.html';
+      alert("Você precisa se logar ou se registrar para acessar essa página");
+    }}
     
   </script>
   
