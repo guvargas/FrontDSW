@@ -38,7 +38,7 @@
                      <input type="password" id="senha" class="form-control" placeholder="Digite sua senha">
                   </div>
                   <button type="submit" id="registrar" class="btn btn-black">Registrar</button>
-                  <button type="submit" id="entrar" class="btn btn-grey">Entrar</button>
+                  <button type="submit" id="voltar" class="btn btn-grey">Voltar</button>
                </form>
             </div>
          </div>
@@ -47,19 +47,20 @@
 
          //   window.location.href = '/registrarse.html';
          $(document).ready(function(){ 
-      $("#registrar").click(function () {
-         const dados = JSON.stringify(dadosInsert());
+         
+         $("#registrar").click(function () {
+         const dados = JSON.stringify(dadosInseridos());
          postUsuario(dados);
-         $("#login").hide();
+        
          return false;
     
        });
-       $("#login").click(function () {
-         window.location.href = '/registrarse.html';
-      return false;
+       $("#voltar").click(function () {
+         window.location.href = '/login.html';
+               return false;
           });
       });
-
+//var user = localStorage._id;
 
       function postUsuario(dados) {
             $.ajax({
@@ -78,7 +79,7 @@
             });
       }
 
-      function dadosInsert() {
+      function dadosInseridos() {
             var obj = {
                 name: $("#nome").val(),
                 senha: $("#senha").val(),

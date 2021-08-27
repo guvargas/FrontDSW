@@ -1,1 +1,13 @@
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+      function postUsuario(dados) {
+            $.ajax({
+                type: "POST",
+                url: "http://192.168.18.90:4000/usuarios",
+                data: dados,
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8"
+            }).done(function (data, status) {
+                alert("Usuário "+ data.name +" criado com sucesso");
+            });
+      }

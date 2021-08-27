@@ -47,21 +47,18 @@
 
    $(document).ready(function(){ 
       $("#registrar").click(function () {
-         var user = localStorage._id;
+      
+       window.location.href = '/registrarse.html';
 
-             alert(user);
-
-
-             
-     // window.location.href = '/registrarse.html';
       return false;
        });
        $("#login").click(function () {
-               const dados = dadosInsert();
+               const dados = dadosInseridos();
                getUsuario(dados);
                return false;
           });
       });
+//var user = localStorage._id;
 
       function getUsuario(dados) {
             $.ajax({
@@ -74,6 +71,7 @@
               localStorage.setItem("usuario",data.login.username);
               localStorage.setItem("_id",data.login._id);
               localStorage.setItem("name",data.login.name);
+              window.location.href = '/principal.html';
 
 
             }).fail(function(data, status){
@@ -82,19 +80,7 @@
       }
 
 
-      function postUsuario(dados) {
-            $.ajax({
-                type: "POST",
-                url: "http://192.168.18.90:4000/usuarios",
-                data: dados,
-                dataType: 'json',
-                contentType: "application/json; charset=utf-8"
-            }).done(function (data, status) {
-                alert("Usuário "+ data.name +" criado com sucesso");
-            });
-      }
-
-      function dadosInsert() {
+      function dadosInseridos() {
             var obj = {
                 name: $("#nome").val(),
                 senha: $("#senha").val(),
@@ -102,13 +88,6 @@
             }
             return obj;
         }
-         /*
-
-       $("#login").click(function () {
-
-         window.location.href = '/principal.html';
-         return false;
-         
-         */
+  
 </script>
 </html>
