@@ -53,6 +53,7 @@
               <th scope="col">Nome</th>
               <th scope="col">Email</th>
               <th scope="col">Telefone</th>
+              <th scope="col">Alterar</th>
             </tr>
           </thead>
           <tbody>
@@ -110,7 +111,8 @@
             text += "<tr>";
               text += "<td>" + data.contato[ob].nome + "</td>";
               text += "<td>" + data.contato[ob].email + "</td>";
-              text += "<td>" + data.contato[ob].fone + "</td>";               
+              text += "<td>" + data.contato[ob].fone + "</td>";   
+              text+= "<td><button class=\'btn-secondary\' onclick=\"alterar("+"\'"+data.contato[ob]._id+"\'"+")\">✓</button></td>";                       
               text += "</tr>";
             }
             // document.getElementsByTagName("tbody")[0].innerHTML = text;
@@ -129,12 +131,7 @@
         // Begin accessing JSON data here
         var data = JSON.parse(this.response)
         if (request.status >= 200 && request.status < 400) {
-          console.log(data);
-          
-          for(ob in data.contato){
-            console.log(data.contato[ob].nome);
-          }
-          
+        
           if(data.contato.length==0){
             alert("Verifiquei aqui que você não tem nenhum contato ainda, vamos adicionar?");
             window.location.href = '/adicionarContato.html';
@@ -144,9 +141,11 @@
             text += "<tr>";
               text += "<td>" + data.contato[ob].nome + "</td>";
               text += "<td>" + data.contato[ob].email + "</td>";
-              text += "<td>" + data.contato[ob].fone + "</td>";               
+              text += "<td>" + data.contato[ob].fone + "</td>"; 
+              text+= "<td><button class=\'btn-secondary\' onclick=\"alterar("+"\'"+data.contato[ob]._id+"\'"+")\">✓</button></td>";          
               text += "</tr>";
             }
+       
             // document.getElementsByTagName("tbody")[0].innerHTML = text;
             $("tbody").html(text);
           } else {
@@ -155,7 +154,11 @@
         }
         request.send()
       }
-      
+      function alterar(id){
+        localStorage.setItem("contato",id);
+        window.location.href = '/alterarContato.html';
+      }
+ 
     </script>
     
   </body>
