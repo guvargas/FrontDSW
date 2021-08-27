@@ -108,8 +108,15 @@
       });
       
       
-      $("#filtrarNome").click(function () {
-        buscarContatos("http://192.168.18.90:4000/contatos/"+localStorage._id+'/'+$("#nome").val(),'http://192.168.18.90:4000/compromissos/'+localStorage._id);
+      $("#filtrarData").click(function () {
+        
+       var str= $("#dateInicio").val();
+        var comeco = str.split("/");
+         str= $("#dateFim").val();
+        var fim =str.split("/");
+        console.log('http://192.168.18.90:4000/compromissos/filtrodata/'+comeco[2]+comeco[1]+comeco[0]+'/'+fim[2]+fim[1]+fim[0]+'/'+localStorage._id);
+        buscarContatos("http://192.168.18.90:4000/contatos/"+localStorage._id,'http://192.168.18.90:4000/compromissos/filtrodata/'
+        +comeco[2]+comeco[1]+comeco[0]+'/'+fim[2]+fim[1]+fim[0]+'/'+localStorage._id);
         return false;
       });
       
@@ -125,10 +132,9 @@
         // Begin accessing JSON data here
         var data = JSON.parse(this.response)
         if (request.status >= 200 && request.status < 400) {
-          
-          
+         
           if(data.compromissos.length==0){
-            alert("Verifiquei aqui que você não tem nenhum compromisso ainda, vamos adicionar?");
+            alert("Sem compromissos");
             //window.location.href = '/adicionarContato.html';
           }
           var text = "";
